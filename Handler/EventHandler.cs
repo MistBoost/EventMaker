@@ -25,7 +25,7 @@ namespace EventMaker.Handler
 
         public void DeleteEvent()
         {
-            if (EventCatalogSingleton.Instance.ObservableCollection.Count != 0)
+            if (EventCatalogSingleton.Instance.ObservableCollection.Count != 0 && EventViewModel.SelectedEventIndex != -1)
             {
                 EventCatalogSingleton.Instance.Remove(EventCatalogSingleton.Instance.ObservableCollection[EventViewModel.SelectedEventIndex]);
             }
