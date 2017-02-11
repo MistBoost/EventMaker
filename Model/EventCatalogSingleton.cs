@@ -10,7 +10,8 @@ namespace EventMaker.Model
 {
     public sealed class EventCatalogSingleton : INotifyPropertyChanged
     {
-        private static EventCatalogSingleton _instance;
+        private static volatile EventCatalogSingleton _instance;
+        private static readonly object instanceLocker = new Object();
         private ObservableCollection<Event> _observableCollection;
 
         public ObservableCollection<Event> ObservableCollection
@@ -24,7 +25,21 @@ namespace EventMaker.Model
                 OnPropertyChanged(nameof(ObservableCollection));
             }
         }
-        public static EventCatalogSingleton Instance => _instance ?? (_instance = new EventCatalogSingleton());
+        public static EventCatalogSingleton Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (instanceLocker)
+                    {
+                        if (_instance == null)
+                            _instance = new EventCatalogSingleton();
+                    }
+                }
+                return _instance;
+            }
+        }
 
         private EventCatalogSingleton()
         {
