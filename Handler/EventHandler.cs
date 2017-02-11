@@ -21,7 +21,7 @@ namespace EventMaker.Handler
 
         public void CreateEvent()
         {
-            EventCatalogSingleton.Instance.Add(EventViewModel.Id, EventViewModel.Name, EventViewModel.Description, EventViewModel.Place, DateTimeConverter.DateTimeOffsetAndTimeSetToDateTime(EventViewModel.Date, EventViewModel.Time));
+            EventCatalogSingleton.Instance.Add(EventViewModel.Name, EventViewModel.Description, EventViewModel.Place, DateTimeConverter.DateTimeOffsetAndTimeSetToDateTime(EventViewModel.Date, EventViewModel.Time));
         }
 
         public async void DeleteEvent()
@@ -45,7 +45,7 @@ namespace EventMaker.Handler
                 } else
                 {
                     deleteEventDialog.Hide();
-                }          
+                }       
             }
         }
 

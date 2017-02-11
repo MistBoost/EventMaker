@@ -46,13 +46,13 @@ namespace EventMaker.Model
             LoadEventsAsync();
         }
 
-        public void Add(int id, string name, string description, string place, DateTime dateTime)
+        public void Add(string name, string description, string place, DateTime dateTime)
         {   
             if(ObservableCollection == null)
             {
                 ObservableCollection = new ObservableCollection<Event>();
             }
-            ObservableCollection.Add(new Event(ObservableCollection.Count+1, name, description, place, dateTime));
+            ObservableCollection.Add(new Event(name, description, place, dateTime));
             PersistencyService.SaveEventsAsJsonAsync(_observableCollection);
         }
 

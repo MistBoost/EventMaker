@@ -22,6 +22,7 @@ namespace EventMaker.ViewModel
         private string _place;
         private DateTimeOffset _date;
         private TimeSpan _time;
+        private int _selectedIndex;
         private ICommand _createEventCommand;
         private ICommand _deleteEventCommand;
         private ICommand _closeDialogCommand;
@@ -83,7 +84,13 @@ namespace EventMaker.ViewModel
             get { return _closeDialogCommand; }
             set { _closeDialogCommand = value; }
         }
-        public static int SelectedEventIndex { get; set; }
+        public  int SelectedEventIndex {
+            get { return _selectedIndex; }
+            set { _selectedIndex = value;
+                  OnPropertyChanged("SelectedEventIndex");
+            }
+        }
+
 
         public EventViewModel()
         {
@@ -94,6 +101,7 @@ namespace EventMaker.ViewModel
             EventHandler = new Handler.EventHandler(this);
             _createEventCommand = new RelayCommand(EventHandler.CreateEvent);
             _deleteEventCommand = new RelayCommand(EventHandler.DeleteEvent);
+            SelectedEventIndex = -1;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -6,25 +6,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:EventMaker.ViewModel"
     xmlns:model="using:EventMaker.Model"
+    xmlns:converters="using:EventMaker.Converter" 
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     x:Class="EventMaker.View.EventPage"
     mc:Ignorable="d">
     <Page.DataContext>
         <viewModel:EventViewModel x:Name="EventViewModel"/>
     </Page.DataContext>
+    <Page.Resources>
+        <converters:SelectedIndexConverter x:Key="IndexToBoolConverter" />
+    </Page.Resources>
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Icon="Add"
                           Label="Add">
                 <Interactivity:Interaction.Behaviors>
                     <Core:EventTriggerBehavior EventName="Click">
-                        <Core:NavigateToPageAction TargetPage="EventMaker.View.CreateEventPage"/>
+                        <Core:NavigateToPageAction TargetPage="EventMaker.View.CreateEventPage" />
                     </Core:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
             </AppBarButton>
             <AppBarButton Icon="Remove"
                           Label="Remove"
-                          Command="{x:Bind EventViewModel.DeleteEventCommand, Mode=OneWay}">
+                          Command="{x:Bind EventViewModel.DeleteEventCommand, Mode=OneWay}"
+                          IsEnabled="{Binding SelectedEventIndex, Mode=OneWay, Converter={StaticResource IndexToBoolConverter}}">
             </AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>
@@ -38,14 +43,17 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <TextBlock Text="List of events"
                    FontSize="30"
                    Padding="10"></TextBlock>
+        
         <ListView ItemsSource="{x:Bind EventViewModel.EventCatalogSingleton.ObservableCollection, Mode=OneWay}"
                   SelectedIndex="{Binding SelectedEventIndex, Mode=TwoWay}"
                   Margin="10"
-                  Grid.Row="1">
+                  Grid.Row="1"
+                  CanReorderItems="True"
+                  CanDragItems="True">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Event">
                     <StackPanel Orientation="Horizontal">

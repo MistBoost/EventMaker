@@ -25,7 +25,6 @@ namespace EventMaker.View
         public EventPage()
         {
             this.InitializeComponent();
-
-        }        
+        }
     }
 }
