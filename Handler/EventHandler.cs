@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EventMaker.Converter;
 using EventMaker.Model;
 using EventMaker.ViewModel;
+using Windows.UI.Xaml.Controls;
 
 namespace EventMaker.Handler
 {
@@ -23,11 +24,28 @@ namespace EventMaker.Handler
             EventCatalogSingleton.Instance.Add(EventViewModel.Id, EventViewModel.Name, EventViewModel.Description, EventViewModel.Place, DateTimeConverter.DateTimeOffsetAndTimeSetToDateTime(EventViewModel.Date, EventViewModel.Time));
         }
 
-        public void DeleteEvent()
+        public async void DeleteEvent()
         {
             if (EventCatalogSingleton.Instance.ObservableCollection.Count != 0 && EventViewModel.SelectedEventIndex != -1)
             {
-                EventCatalogSingleton.Instance.Remove(EventCatalogSingleton.Instance.ObservableCollection[EventViewModel.SelectedEventIndex]);
+                //Delete event confirmation
+                ContentDialog deleteEventDialog = new ContentDialog()
+                {
+                    Title = "Delete event permanently?",
+                    Content = "If you delete this event, you won't be able to recover it. Do you want to delete it?",
+                    PrimaryButtonText = "Delete",
+                    SecondaryButtonText = "Cancel"
+                };
+
+                ContentDialogResult result = await deleteEventDialog.ShowAsync();
+
+                if(result == ContentDialogResult.Primary)
+                {
+                    EventCatalogSingleton.Instance.Remove(EventCatalogSingleton.Instance.ObservableCollection[EventViewModel.SelectedEventIndex]);
+                } else
+                {
+                    deleteEventDialog.Hide();
+                }          
             }
         }
 

@@ -22,28 +22,9 @@
                     </Core:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
             </AppBarButton>
-            <AppBarButton Icon="Remove" 
-                          Label="Remove">
-                <AppBarButton.Flyout>
-                    <Flyout>
-                        <Flyout.FlyoutPresenterStyle>
-                            <Style TargetType="FlyoutPresenter">
-                                <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
-                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-                                <Setter Property="IsTabStop" Value="True"/>
-                                <Setter Property="TabNavigation" Value="Cycle"/>
-                            </Style>
-                        </Flyout.FlyoutPresenterStyle>
-                        <StackPanel>
-                            <TextBlock Text="Do you want to remove this Event ?"
-                                       Padding="5"></TextBlock>
-                            <Button Content="Confirm"
-                                    Margin="0,5,0,0"
-                                    HorizontalAlignment="Center"
-                                    Command="{x:Bind EventViewModel.DeleteEventCommand, Mode=OneWay}"/>
-                        </StackPanel>
-                    </Flyout>
-                </AppBarButton.Flyout>
+            <AppBarButton Icon="Remove"
+                          Label="Remove"
+                          Command="{x:Bind EventViewModel.DeleteEventCommand, Mode=OneWay}">
             </AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>
@@ -68,11 +49,16 @@
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Event">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Padding="5" Text="{x:Bind ID, Mode=OneWay}" />
-                        <TextBlock Padding="5" Text="{x:Bind Name, Mode=OneWay}"/>
-                        <TextBlock Padding="5" Text="{x:Bind Description, Mode=OneWay}"/>
-                        <TextBlock Padding="5" Text="{x:Bind Place, Mode=OneWay}"/>
-                        <TextBlock Padding="5" Text="{x:Bind DateTime, Mode=OneWay}"/>
+                        <TextBlock Padding="5"
+                                   Text="{x:Bind ID, Mode=OneWay}" />
+                        <TextBlock Padding="5"
+                                   Text="{x:Bind Name, Mode=OneWay}" />
+                        <TextBlock Padding="5"
+                                   Text="{x:Bind Description, Mode=OneWay}" />
+                        <TextBlock Padding="5"
+                                   Text="{x:Bind Place, Mode=OneWay}" />
+                        <TextBlock Padding="5"
+                                   Text="{x:Bind DateTime, Mode=OneWay}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

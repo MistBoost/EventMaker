@@ -24,6 +24,7 @@ namespace EventMaker.ViewModel
         private TimeSpan _time;
         private ICommand _createEventCommand;
         private ICommand _deleteEventCommand;
+        private ICommand _closeDialogCommand;
 
         public EventCatalogSingleton EventCatalogSingleton { get; set; }
 
@@ -75,6 +76,12 @@ namespace EventMaker.ViewModel
         {
             get { return _deleteEventCommand; }
             set { _deleteEventCommand = value; }
+        }
+
+        public ICommand CloseDialogCommand
+        {
+            get { return _closeDialogCommand; }
+            set { _closeDialogCommand = value; }
         }
         public static int SelectedEventIndex { get; set; }
 

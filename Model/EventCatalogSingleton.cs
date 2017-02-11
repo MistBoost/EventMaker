@@ -15,7 +15,9 @@ namespace EventMaker.Model
 
         public ObservableCollection<Event> ObservableCollection
         {
-            get { return _observableCollection; }
+            get {
+                return _observableCollection;
+            }
             set
             {
                 _observableCollection = value;
@@ -30,8 +32,12 @@ namespace EventMaker.Model
         }
 
         public void Add(int id, string name, string description, string place, DateTime dateTime)
-        {
-            ObservableCollection.Add(new Event(id, name, description, place, dateTime));
+        {   
+            if(ObservableCollection == null)
+            {
+                ObservableCollection = new ObservableCollection<Event>();
+            }
+            ObservableCollection.Add(new Event(ObservableCollection.Count+1, name, description, place, dateTime));
             PersistencyService.SaveEventsAsJsonAsync(_observableCollection);
         }
 
