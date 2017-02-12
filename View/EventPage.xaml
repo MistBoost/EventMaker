@@ -1,17 +1,17 @@
-﻿<Page
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:EventMaker.View"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModel="using:EventMaker.ViewModel"
-    xmlns:model="using:EventMaker.Model"
-    xmlns:converters="using:EventMaker.Converter" 
-    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
-    x:Class="EventMaker.View.EventPage"
-    mc:Ignorable="d">
+﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:EventMaker.View"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewModel="using:EventMaker.ViewModel"
+      xmlns:model="using:EventMaker.Model"
+      xmlns:converters="using:EventMaker.Converter"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      x:Class="EventMaker.View.EventPage"
+      mc:Ignorable="d">
     <Page.DataContext>
-        <viewModel:EventViewModel x:Name="EventViewModel"/>
+        <viewModel:EventViewModel x:Name="EventViewModel" />
     </Page.DataContext>
     <Page.Resources>
         <converters:SelectedIndexConverter x:Key="IndexToBoolConverter" />
@@ -36,18 +36,18 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Text="List of events"
                    FontSize="30"
                    Padding="10"></TextBlock>
-        
+
         <ListView ItemsSource="{x:Bind EventViewModel.EventCatalogSingleton.ObservableCollection, Mode=OneWay}"
                   SelectedIndex="{Binding SelectedEventIndex, Mode=TwoWay}"
                   Margin="10"
@@ -71,5 +71,15 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <TextBlock Text="{x:Bind EventViewModel.EventsChangedNotification, Mode=OneWay}"
+                   Grid.Column="1"
+                   Grid.Row="1"
+                   Margin="8,20,8,100"
+                   VerticalAlignment="Center"
+                   Padding="4"
+                   Foreground="#FF31A425"
+                   FontFamily="Segoe UI Semibold"
+                   FontSize="16" />
     </Grid>
 </Page>

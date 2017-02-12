@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using EventMaker.Annotations;
 using EventMaker.Persistency;
+using System.Diagnostics;
+using Windows.UI.Xaml.Controls;
 
 namespace EventMaker.Model
 {
@@ -25,6 +27,7 @@ namespace EventMaker.Model
                 OnPropertyChanged(nameof(ObservableCollection));
             }
         }
+
         public static EventCatalogSingleton Instance
         {
             get
@@ -48,10 +51,6 @@ namespace EventMaker.Model
 
         public void Add(string name, string description, string place, DateTime dateTime)
         {   
-            if(ObservableCollection == null)
-            {
-                ObservableCollection = new ObservableCollection<Event>();
-            }
             ObservableCollection.Add(new Event(name, description, place, dateTime));
             PersistencyService.SaveEventsAsJsonAsync(_observableCollection);
         }
@@ -65,6 +64,10 @@ namespace EventMaker.Model
         public async void LoadEventsAsync()
         {
             _observableCollection = await PersistencyService.LoadEventsFromJsonAsync();
+            if (ObservableCollection == null)
+            {
+                ObservableCollection = new ObservableCollection<Event>();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
