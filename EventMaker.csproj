@@ -100,6 +100,8 @@
     <Compile Include="Converter\EventBackgroundConverter.cs" />
     <Compile Include="Converter\SelectedIndexConverter.cs" />
     <Compile Include="Handler\EventHandler.cs" />
+    <Compile Include="Model\Account.cs" />
+    <Compile Include="Model\AccountCatalogSingleton.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\EventCatalogSingleton.cs" />
     <Compile Include="Persistency\PersistencyService.cs" />

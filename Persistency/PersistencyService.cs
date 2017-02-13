@@ -13,19 +13,19 @@ namespace EventMaker.Persistency
 {
     public class PersistencyService
     {
-        public static void SaveEventsAsJsonAsync(ObservableCollection<Event> events)
+        public static void SaveGenericAsJsonAsync<T>(ObservableCollection<T> objects, string filename)
         {
-            var json = JsonConvert.SerializeObject(events);
-            SerializeEventsFileAsync(json, "events.json");
+            var json = JsonConvert.SerializeObject(objects);
+            SerializeGenericFileAsync(json, filename);
         }
 
-        public static async Task<ObservableCollection<Event>> LoadEventsFromJsonAsync()
+        public static async Task<ObservableCollection<T>> LoadGenericFromJsonAsync<T>(string filename)
         {
-            var json = await DeSerializeEventsFileAsync("events.json");
-            return JsonConvert.DeserializeObject<ObservableCollection<Event>>(json);
+            var json = await DeSerializeGenericFileAsync(filename);
+            return JsonConvert.DeserializeObject<ObservableCollection<T>>(json);
         }
 
-        public static async void SerializeEventsFileAsync(string eventsString, string fileName)
+        public static async void SerializeGenericFileAsync(string jsonstring, string fileName)
         {
             var folder = ApplicationData.Current.RoamingFolder;
             var file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
@@ -33,11 +33,11 @@ namespace EventMaker.Persistency
             using (var writer = new StreamWriter(stream, Encoding.UTF8))
             {
 
-                await writer.WriteAsync(eventsString);
+                await writer.WriteAsync(jsonstring);
             }
         }
 
-        public static async Task<string> DeSerializeEventsFileAsync(string fileName)
+        public static async Task<string> DeSerializeGenericFileAsync(string fileName)
         {
             var json = "";
             try
