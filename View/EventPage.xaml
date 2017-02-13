@@ -15,6 +15,7 @@
     </Page.DataContext>
     <Page.Resources>
         <converters:SelectedIndexConverter x:Key="IndexToBoolConverter" />
+        <converters:EventBackgroundConverter x:Key="EventBackground" />
     </Page.Resources>
     <Page.BottomAppBar>
         <CommandBar>
@@ -44,42 +45,75 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="List of events"
-                   FontSize="30"
-                   Padding="10"></TextBlock>
+        <StackPanel>
+            <TextBlock Text="List of events"
+                       FontSize="30"
+                       Padding="10"></TextBlock>
 
-        <ListView ItemsSource="{x:Bind EventViewModel.EventCatalogSingleton.ObservableCollection, Mode=OneWay}"
-                  SelectedIndex="{Binding SelectedEventIndex, Mode=TwoWay}"
-                  Margin="10"
-                  Grid.Row="1"
-                  CanReorderItems="True"
-                  CanDragItems="True">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="model:Event">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Padding="5"
-                                   Text="{x:Bind ID, Mode=OneWay}" />
-                        <TextBlock Padding="5"
-                                   Text="{x:Bind Name, Mode=OneWay}" />
-                        <TextBlock Padding="5"
-                                   Text="{x:Bind Description, Mode=OneWay}" />
-                        <TextBlock Padding="5"
-                                   Text="{x:Bind Place, Mode=OneWay}" />
-                        <TextBlock Padding="5"
-                                   Text="{x:Bind DateTime, Mode=OneWay}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            <ListView ItemsSource="{x:Bind EventViewModel.EventCatalogSingleton.ObservableCollection, Mode=OneWay}"
+                      SelectedIndex="{Binding SelectedEventIndex, Mode=TwoWay}"
+                      Margin="10"
+                      Grid.Row="1"
+                      CanReorderItems="True"
+                      CanDragItems="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Event">
+                        <Border Background="{x:Bind DateTime, Mode=OneWay,Converter={StaticResource EventBackground}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Padding="5"
+                                           Text="{x:Bind ID, Mode=OneWay}" />
+                                <TextBlock Padding="5"
+                                           Text="{x:Bind Name, Mode=OneWay}" />
+                                <TextBlock Padding="5"
+                                           Text="{x:Bind Description, Mode=OneWay}" />
+                                <TextBlock Padding="5"
+                                           Text="{x:Bind Place, Mode=OneWay}" />
+                                <TextBlock Padding="5"
+                                           Text="{x:Bind DateTime, Mode=OneWay}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel Margin="8,0,0,0">
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,0,0,4">
+                    <Rectangle Height="20"
+                               Width="20"
+                               Margin="4,0,0,0"
+                               Fill="#FF39E648"></Rectangle>
+                    <TextBlock Text="Today" Margin="4,0,0,0"/>
 
-        <TextBlock Text="{x:Bind EventViewModel.EventsChangedNotification, Mode=OneWay}"
-                   Grid.Column="1"
-                   Grid.Row="1"
-                   Margin="8,20,8,100"
-                   VerticalAlignment="Center"
-                   Padding="4"
-                   Foreground="#FF31A425"
-                   FontFamily="Segoe UI Semibold"
-                   FontSize="16" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,0,0,4">
+                    <Rectangle Height="20"
+                               Width="20"
+                               Margin="4,0,0,0"
+                               Fill="#FFFA6639">
+                    </Rectangle>
+                    <TextBlock Text="Finished"
+                               Margin="4,0,0,0" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,0,0,4">
+                    <Rectangle Height="20"
+                               Width="20"
+                               Margin="4,0,0,0"
+                               Fill="#FF35A7F2">
+                    </Rectangle>
+                    <TextBlock Text="Future"
+                               Margin="4,0,0,0" />
+                </StackPanel>
+            </StackPanel>
+            <TextBlock Text="{x:Bind EventViewModel.EventsChangedNotification, Mode=OneWay}"
+                       Grid.Column="1"
+                       Margin="6,73,10,131"
+                       VerticalAlignment="Center"
+                       Padding="4"
+                       Foreground="#FF31A425"
+                       FontFamily="Segoe UI Semibold"
+                       FontSize="16" />
+        </StackPanel>
     </Grid>
 </Page>
