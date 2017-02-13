@@ -5,45 +5,69 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using EventMaker.Annotations;
 using EventMaker.Persistency;
+using System.Diagnostics;
+using Windows.UI.Xaml.Controls;
 
 namespace EventMaker.Model
 {
     public sealed class EventCatalogSingleton : INotifyPropertyChanged
     {
-        private static EventCatalogSingleton _instance;
+        private static volatile EventCatalogSingleton _instance;
+        private static readonly object instanceLocker = new Object();
         private ObservableCollection<Event> _observableCollection;
 
         public ObservableCollection<Event> ObservableCollection
         {
-            get { return _observableCollection; }
+            get {
+                return _observableCollection;
+            }
             set
             {
                 _observableCollection = value;
                 OnPropertyChanged(nameof(ObservableCollection));
             }
         }
-        public static EventCatalogSingleton Instance => _instance ?? (_instance = new EventCatalogSingleton());
+
+        public static EventCatalogSingleton Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (instanceLocker)
+                    {
+                        if (_instance == null)
+                            _instance = new EventCatalogSingleton();
+                    }
+                }
+                return _instance;
+            }
+        }
 
         private EventCatalogSingleton()
         {
             LoadEventsAsync();
         }
 
-        public void Add(int id, string name, string description, string place, DateTime dateTime)
-        {
-            ObservableCollection.Add(new Event(id, name, description, place, dateTime));
-            PersistencyService.SaveGenericAsJsonAsync(_observableCollection, "events.json");
+        public void Add(string name, string description, string place, DateTime dateTime)
+        {   
+            ObservableCollection.Add(new Event(name, description, place, dateTime));
+            PersistencyService.SaveEventsAsJsonAsync(_observableCollection);
         }
 
-        public void Remove(Event _event)
+        public void Remove(Event eventToBeRemoved)
         {
-            _observableCollection.Remove(_event);
-            PersistencyService.SaveGenericAsJsonAsync(_observableCollection, "events.json");
+            ObservableCollection.Remove(eventToBeRemoved);
+            PersistencyService.SaveEventsAsJsonAsync(_observableCollection);
         }
 
         public async void LoadEventsAsync()
         {
-            _observableCollection = await PersistencyService.LoadGenericFromJsonAsync<Event>("events.json");
+            _observableCollection = await PersistencyService.LoadEventsFromJsonAsync();
+            if (ObservableCollection == null)
+            {
+                ObservableCollection = new ObservableCollection<Event>();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,13 +45,24 @@ namespace EventMaker.Model
             set { _dateTime = value; }
         }
 
-        public Event(int id, string name, string description, string place, DateTime dateTime)
+        public Event(string name, string description, string place, DateTime dateTime)
         {
-            ID = id;
+            
+            ID = setID();
             Name = name;
             Description = description;
             Place = place;
             DateTime = dateTime;
+        }
+
+        public int setID()
+        {
+            ObservableCollection<Event> allEvents = EventCatalogSingleton.Instance.ObservableCollection;
+            if (allEvents == null || allEvents.Count == 0)
+            {
+                return 1;
+            }
+            return allEvents[allEvents.Count - 1].ID + 1;
         }
 
         public override string ToString()

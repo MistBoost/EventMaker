@@ -11,6 +11,8 @@ using EventMaker.Annotations;
 using EventMaker.Common;
 using EventMaker.Handler;
 using EventMaker.Model;
+using System.Threading;
+using Windows.UI.Xaml;
 
 namespace EventMaker.ViewModel
 {
@@ -22,8 +24,11 @@ namespace EventMaker.ViewModel
         private string _place;
         private DateTimeOffset _date;
         private TimeSpan _time;
+        private int _selectedIndex;
+        private string _eventsChangedNotification;
         private ICommand _createEventCommand;
         private ICommand _deleteEventCommand;
+        private ICommand _closeDialogCommand;
 
         public EventCatalogSingleton EventCatalogSingleton { get; set; }
 
@@ -63,6 +68,14 @@ namespace EventMaker.ViewModel
             set { _time = value; }
         }
 
+        public string EventsChangedNotification
+        {
+            get { return _eventsChangedNotification; }
+            set { _eventsChangedNotification = value;
+                  OnPropertyChanged("EventsChangedNotification");
+            }
+        }
+
         public Handler.EventHandler EventHandler { get; set; }
 
         public ICommand CreateEventCommand
@@ -76,17 +89,61 @@ namespace EventMaker.ViewModel
             get { return _deleteEventCommand; }
             set { _deleteEventCommand = value; }
         }
-        public static int SelectedEventIndex { get; set; }
+
+        public ICommand CloseDialogCommand
+        {
+            get { return _closeDialogCommand; }
+            set { _closeDialogCommand = value; }
+        }
+        public  int SelectedEventIndex {
+            get { return _selectedIndex; }
+            set { _selectedIndex = value;
+                  OnPropertyChanged("SelectedEventIndex");
+            }
+        }
+
 
         public EventViewModel()
         {
             EventCatalogSingleton = EventCatalogSingleton.Instance;
+            EventCatalogSingleton.ObservableCollection.CollectionChanged += EventsCollection_CollectionChanged;
             var dt = DateTime.Now;
             Date = new DateTimeOffset(dt.Year, dt.Month, dt.Day, 0, 0, 0, 0, new TimeSpan());
             Time = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
             EventHandler = new Handler.EventHandler(this);
             _createEventCommand = new RelayCommand(EventHandler.CreateEvent);
             _deleteEventCommand = new RelayCommand(EventHandler.DeleteEvent);
+            SelectedEventIndex = -1;
+        }
+
+
+        private void EventsCollection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            EventsChangedNotification = "Event";
+            if (e.NewItems != null)
+            {
+                foreach (Event item in e.NewItems)
+                {
+                    EventsChangedNotification += $" {item.Name} ";
+                }
+                EventsChangedNotification += "successfully added.";
+            }
+            else if (e.OldItems != null)
+            {
+                foreach (Event item in e.OldItems)
+                {
+                    EventsChangedNotification += $" {item.Name} ";
+                }
+                EventsChangedNotification += "successfully removed.";
+            }
+
+            DispatcherTimer _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(5);
+            _timer.Tick += (a, args) =>
+            {
+                EventsChangedNotification = "";
+            };
+            _timer.Start();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
