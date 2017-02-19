@@ -24,8 +24,10 @@ namespace EventMaker.ViewModel
         private string _place;
         private DateTimeOffset _date;
         private TimeSpan _time;
+        private string _searchQuery;
         private int _selectedIndex;
         private string _eventsChangedNotification;
+        private bool _isEditOpen; 
         private ICommand _createEventCommand;
         private ICommand _deleteEventCommand;
         private ICommand _closeDialogCommand;
@@ -68,12 +70,28 @@ namespace EventMaker.ViewModel
             set { _time = value; }
         }
 
+        public string SearchQuery
+        {
+            get { return _searchQuery; }
+            set { _searchQuery = value;
+                OnPropertyChanged("SearchQuery");
+            }
+        }
+
         public string EventsChangedNotification
         {
             get { return _eventsChangedNotification; }
-            set { _eventsChangedNotification = value;
-                  OnPropertyChanged("EventsChangedNotification");
+            set
+            {
+                _eventsChangedNotification = value;
+                OnPropertyChanged("EventsChangedNotification");
             }
+        }
+
+        public bool IsEditOpen
+        {
+            get { return _isEditOpen; }
+            set { _isEditOpen = value; }
         }
 
         public Handler.EventHandler EventHandler { get; set; }
@@ -95,10 +113,17 @@ namespace EventMaker.ViewModel
             get { return _closeDialogCommand; }
             set { _closeDialogCommand = value; }
         }
-        public  int SelectedEventIndex {
+
+        public RelayCommand OpenEditCommand { get; set; }
+        public RelayCommand CloseEditCommand { get; set; }
+
+        public int SelectedEventIndex
+        {
             get { return _selectedIndex; }
-            set { _selectedIndex = value;
-                  OnPropertyChanged("SelectedEventIndex");
+            set
+            {
+                _selectedIndex = value;
+                OnPropertyChanged("SelectedEventIndex");
             }
         }
 
@@ -113,6 +138,8 @@ namespace EventMaker.ViewModel
             EventHandler = new Handler.EventHandler(this);
             _createEventCommand = new RelayCommand(EventHandler.CreateEvent);
             _deleteEventCommand = new RelayCommand(EventHandler.DeleteEvent);
+            OpenEditCommand = new RelayCommand(() => IsEditOpen = true);
+            CloseEditCommand = new RelayCommand(() => IsEditOpen = false);
             SelectedEventIndex = -1;
         }
 

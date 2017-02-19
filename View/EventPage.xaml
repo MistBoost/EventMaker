@@ -6,6 +6,7 @@
       xmlns:viewModel="using:EventMaker.ViewModel"
       xmlns:model="using:EventMaker.Model"
       xmlns:converters="using:EventMaker.Converter"
+      xmlns:common="using:EventMaker.Common"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       x:Class="EventMaker.View.EventPage"
@@ -32,6 +33,13 @@
                           Command="{x:Bind EventViewModel.DeleteEventCommand, Mode=OneWay}"
                           IsEnabled="{Binding SelectedEventIndex, Mode=OneWay, Converter={StaticResource IndexToBoolConverter}}">
             </AppBarButton>
+            <AppBarButton Icon="Edit"
+                          Label="Edit"
+                          IsEnabled="{Binding SelectedEventIndex, Mode=OneWay, Converter={StaticResource IndexToBoolConverter}}">
+                
+                 
+                
+            </AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>
 
@@ -46,12 +54,16 @@
         </Grid.RowDefinitions>
 
         <StackPanel>
-            <TextBlock Text="List of events"
+            <TextBlock Text="List of Events"
                        FontSize="30"
-                       Padding="10"></TextBlock>
-
+                       Padding="10" />
+            <TextBox PlaceholderText="Search for events"
+                     TextChanging="TextBox_TextChanging"
+                     x:Name="query" />
             <ListView ItemsSource="{x:Bind EventViewModel.EventCatalogSingleton.ObservableCollection, Mode=OneWay}"
+                      x:Name="EventsList"
                       SelectedIndex="{Binding SelectedEventIndex, Mode=TwoWay}"
+                      SelectedItem="{Binding SelectedEvent, Mode=TwoWay}"
                       Margin="10"
                       Grid.Row="1"
                       CanReorderItems="True"
@@ -82,7 +94,8 @@
                                Width="20"
                                Margin="4,0,0,0"
                                Fill="#FF39E648"></Rectangle>
-                    <TextBlock Text="Today" Margin="4,0,0,0"/>
+                    <TextBlock Text="Today"
+                               Margin="4,0,0,0" />
 
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
