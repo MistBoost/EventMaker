@@ -138,8 +138,6 @@ namespace EventMaker.ViewModel
             EventHandler = new Handler.EventHandler(this);
             _createEventCommand = new RelayCommand(EventHandler.CreateEvent);
             _deleteEventCommand = new RelayCommand(EventHandler.DeleteEvent);
-            OpenEditCommand = new RelayCommand(() => IsEditOpen = true);
-            CloseEditCommand = new RelayCommand(() => IsEditOpen = false);
             SelectedEventIndex = -1;
         }
 
