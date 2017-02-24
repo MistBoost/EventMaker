@@ -1,5 +1,7 @@
-﻿using System;
+﻿using EventMaker.Model;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,6 +27,13 @@ namespace EventMaker.View
         public EventPage()
         {
             this.InitializeComponent();
+        }
+
+        private void TextBox_TextChanging(object sender, TextBoxTextChangingEventArgs e)
+        {
+            string search = query.Text.ToString().Trim();
+            EventsList.ItemsSource = new ObservableCollection<Event>(EventCatalogSingleton.Instance.ObservableCollection
+                                    .Where(x => x.Name.Contains(search)));
         }
     }
 }

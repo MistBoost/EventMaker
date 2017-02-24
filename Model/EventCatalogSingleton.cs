@@ -14,12 +14,13 @@ namespace EventMaker.Model
     {
         private static volatile EventCatalogSingleton _instance;
         private static readonly object instanceLocker = new Object();
+        public static Event selectedEvent { get; set; }
         private ObservableCollection<Event> _observableCollection;
 
         public ObservableCollection<Event> ObservableCollection
         {
             get {
-                return _observableCollection;
+                return (_observableCollection == null) ? new ObservableCollection<Event>() : _observableCollection;
             }
             set
             {
@@ -49,10 +50,12 @@ namespace EventMaker.Model
             LoadEventsAsync();
         }
 
-        public void Add(string name, string description, string place, DateTime dateTime)
-        {   
-            ObservableCollection.Add(new Event(name, description, place, dateTime));
+        public int Add(string name, string description, string place, DateTime dateTime)
+        {
+            Event newEvent = new Event(name, description, place, dateTime);
+            ObservableCollection.Add(newEvent);
             PersistencyService.SaveGenericAsJsonAsync(_observableCollection, "events.json");
+            return ObservableCollection[ObservableCollection.Count-1].ID;
         }
 
         public void Remove(Event eventToBeRemoved)
@@ -61,12 +64,17 @@ namespace EventMaker.Model
             PersistencyService.SaveGenericAsJsonAsync(_observableCollection, "events.json");
         }
 
+        public void Edit(string name, string description, string place, DateTime dateTime)
+        {
+            //PersistencyService.SaveGenericAsJsonAsync(_observableCollection, "events.json");
+        }
+
         public async void LoadEventsAsync()
         {
             _observableCollection = await PersistencyService.LoadGenericFromJsonAsync<Event>("events.json");
-            if (ObservableCollection == null)
+            if (_observableCollection == null)
             {
-                ObservableCollection = new ObservableCollection<Event>();
+                _observableCollection = new ObservableCollection<Event>();
             }
         }
 

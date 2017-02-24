@@ -17,6 +17,7 @@
         <CommandBar>
             <AppBarButton Icon="Save"
                           Label="Save"
+                          IsEnabled="{Binding Text.Length,ElementName=EventName}"
                           Command="{x:Bind EventViewModel.CreateEventCommand}">
                 <interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Click">
@@ -53,6 +54,7 @@
                            Grid.Column="0"
                            Padding="5"></TextBlock>
                 <TextBox Grid.Row="1"
+                         x:Name="EventName"
                          Text="{x:Bind EventViewModel.Name, Mode=TwoWay}"
                          Grid.Column="1"></TextBox>
             

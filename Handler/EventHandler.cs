@@ -24,6 +24,8 @@ namespace EventMaker.Handler
             EventCatalogSingleton.Instance.Add(EventViewModel.Name, EventViewModel.Description, EventViewModel.Place, DateTimeConverter.DateTimeOffsetAndTimeSetToDateTime(EventViewModel.Date, EventViewModel.Time));
         }
 
+
+
         public async void DeleteEvent()
         {
             if (EventCatalogSingleton.Instance.ObservableCollection.Count != 0 && EventViewModel.SelectedEventIndex != -1)
