@@ -52,18 +52,18 @@ namespace EventMaker.Model
         public void Add(string name, string description, string place, DateTime dateTime)
         {   
             ObservableCollection.Add(new Event(name, description, place, dateTime));
-            PersistencyService.SaveEventsAsJsonAsync(_observableCollection);
+            PersistencyService.SaveGenericAsJsonAsync(_observableCollection, "events.json");
         }
 
         public void Remove(Event eventToBeRemoved)
         {
             ObservableCollection.Remove(eventToBeRemoved);
-            PersistencyService.SaveEventsAsJsonAsync(_observableCollection);
+            PersistencyService.SaveGenericAsJsonAsync(_observableCollection, "events.json");
         }
 
         public async void LoadEventsAsync()
         {
-            _observableCollection = await PersistencyService.LoadEventsFromJsonAsync();
+            _observableCollection = await PersistencyService.LoadGenericFromJsonAsync<Event>("events.json");
             if (ObservableCollection == null)
             {
                 ObservableCollection = new ObservableCollection<Event>();

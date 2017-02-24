@@ -15,8 +15,20 @@ namespace EventMaker.Model
     {
         private static AccountCatalogSingleton _instance;
         private ObservableCollection<Account> _observableCollection;
+        private static readonly object instanceLocker = new Object();
 
-        public static AccountCatalogSingleton Instance => _instance ?? (_instance = new AccountCatalogSingleton());
+        public static AccountCatalogSingleton Instance
+        {
+            get {
+                if (_instance != null) return _instance;
+                lock (instanceLocker)
+                {
+                    if (_instance == null)
+                        _instance = new AccountCatalogSingleton();
+                }
+                return _instance;
+            }
+        }
 
         public ObservableCollection<Account> ObservableCollection
         {
