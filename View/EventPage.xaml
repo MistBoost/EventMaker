@@ -36,9 +36,6 @@
             <AppBarButton Icon="Edit"
                           Label="Edit"
                           IsEnabled="{Binding SelectedEventIndex, Mode=OneWay, Converter={StaticResource IndexToBoolConverter}}">
-                
-                 
-                
             </AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>

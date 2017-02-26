@@ -19,13 +19,18 @@ namespace EventMaker.Handler
             EventViewModel = eventViewModel;
         }
 
+        /// <summary>
+        /// Adds event to the collection (data is binded in EventViewModel)
+        /// </summary>
         public void CreateEvent()
         {
             EventCatalogSingleton.Instance.Add(EventViewModel.Name, EventViewModel.Description, EventViewModel.Place, DateTimeConverter.DateTimeOffsetAndTimeSetToDateTime(EventViewModel.Date, EventViewModel.Time));
         }
 
 
-
+        /// <summary>
+        /// Deletes event according to selected index binded in the ViewModel
+        /// </summary>
         public async void DeleteEvent()
         {
             if (EventCatalogSingleton.Instance.ObservableCollection.Count != 0 && EventViewModel.SelectedEventIndex != -1)

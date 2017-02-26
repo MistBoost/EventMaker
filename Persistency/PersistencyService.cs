@@ -32,7 +32,6 @@ namespace EventMaker.Persistency
             using (var stream = await file.OpenStreamForWriteAsync())
             using (var writer = new StreamWriter(stream, Encoding.UTF8))
             {
-
                 await writer.WriteAsync(jsonstring);
             }
         }

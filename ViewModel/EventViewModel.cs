@@ -135,10 +135,12 @@ namespace EventMaker.ViewModel
             var dt = DateTime.Now;
             Date = new DateTimeOffset(dt.Year, dt.Month, dt.Day, 0, 0, 0, 0, new TimeSpan());
             Time = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
+            SelectedEventIndex = -1;
+
+            //creates an instance of EventHandler with an instance of EventViewModel passed as an argument
             EventHandler = new Handler.EventHandler(this);
             _createEventCommand = new RelayCommand(EventHandler.CreateEvent);
             _deleteEventCommand = new RelayCommand(EventHandler.DeleteEvent);
-            SelectedEventIndex = -1;
         }
 
 
